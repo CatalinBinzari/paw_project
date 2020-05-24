@@ -37,6 +37,7 @@ if (!empty($_POST)){
 			 VALUES(:cnp, :nume, :prenume, :data_nasterii, :email, :parola)');
 		$stmt -> execute (array('cnp' => $_POST['cnp'], 'nume' => $_POST['user_name'], 'prenume' => $_POST['user_prename'],
 		                        'data_nasterii' => $_POST['data'], 'email' => $_POST['email'], 'parola' => sha1($_POST['parola'].SALT) ));
+		header("location: login.php");
 	}
 }
 
@@ -44,66 +45,80 @@ if (!empty($_POST)){
 
 <!DOCTYPE html>
 <html>
-<head>
-	<title> Burse scoalri </title>
-	<meta charset="UTF-8">
-</head>
-<body>
-<h1>Pagina de inregistrare</h1>
-<div>
-	<form method="POST">
-		<div style = "color:red;">
-			<?php foreach ($errors as $error) :?>
-				<p><?php echo $error;?></p>
-			<?php endforeach; ?>
-		</div>
-		<div>
-			<label>Nume:</label>
-			<div>
-				<input type="text" name="user_name" required="" value="<?php echo (!empty($_POST['user_name']) ? $_POST['user_name'] : '');?>"/>
-			</div>
-		</div>
-		<div>
-			<label>Prenume:</label>
-			<div>
-				<input type="text" name="user_prename" required="" value="<?php echo (!empty($_POST['user_prename']) ? $_POST['user_prename'] : '');?>"/>
-			</div>
-		</div>
-		<div>
-			<label>Cnp:</label>
-			<div>
-				<input type="text" name="cnp" required="" value="<?php echo (!empty($_POST['cnp']) ? $_POST['cnp'] : '');?>"/>
-			</div>
-		</div>
-		<div>
-			<label>Data nastere ex'1990-09-01':</label>
-			<div>
-				<input type="text" name="data" required="" value="<?php echo (!empty($_POST['data']) ? $_POST['data'] : '');?>"/>
-			</div>
-		</div>
-		<div>
-			<label>Email:</label>
-			<div>
-				<input type="text" name="email" required="" value="<?php echo (!empty($_POST['email']) ? $_POST['email'] : '');?>"/>
-			</div>
-		</div>
-		<div>
-			<label>Parola:</label>
-			<div>
-				<input type="password" name="parola" required="" value=""/>
-			</div>
-		</div>
-		<div>
-			<label>Confirmare parola:</label>
-			<div>
-				<input type="password" name="confirmare_parola" required="" value=""/>
-			</div>
-		</div>
-		<div>
-			<br/>
-			<input type="submit" name="submit" value="Inregistrare">
-		</div>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v4.0.1">
+    <title>Pagina administrare burse</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/sign-in/">
+
+    <!-- Bootstrap core CSS -->
+<link href="assets/dist/css/bootstrap.css" rel="stylesheet">
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+    <!-- Custom styles for this template -->
+    <link href="signin.css" rel="stylesheet">
+  </head>
+  <body class="text-center">
+    <form class="form-signin" method="POST">
+		  <img class="mb-4" src="assets/img/book" alt="" width="72" height="72">
+		  <h1 class="h3 mb-3 font-weight-normal">Pagina de inregistrare</h1>
+
+		   <label for="name" class="sr-only">Nume</label>
+		  <input type="text" name="user_name" id="name" class="form-control" placeholder="Nume de familie"
+		   required=required autofocus value="<?php echo (!empty($_POST['user_name']) ? $_POST['user_name'] : '');?>"/>
+
+		   <label for="prename" class="sr-only">Nume</label>
+		  <input type="text" name="user_prename" id="prename" class="form-control" placeholder="Prenume"
+		   required=required autofocus value="<?php echo (!empty($_POST['user_prename']) ? $_POST['user_prename'] : '');?>"/>
+
+		   <label for="cnp" class="sr-only">cnp</label>
+		  <input type="text" name="cnp" id="cnp" class="form-control" placeholder="CNP"
+		   required=required autofocus value="<?php echo (!empty($_POST['cnp']) ? $_POST['cnp'] : '');?>"/>
+
+		   <label for="data" class="sr-only">Data nastere (Ex. 1990-09-01)</label>
+		  <input type="text" name="data" id="data" class="form-control" placeholder="Data nastere (Ex. 1990-09-01)"
+		   required=required autofocus value="<?php echo (!empty($_POST['data']) ? $_POST['data'] : '');?>"/>
+
+		  <label for="inputEmail" class="sr-only">Adresa de email</label>
+		  <input type="email" name="email" id="inputEmail" class="form-control" placeholder="Adresa de email"
+		   required=required autofocus value="<?php echo (!empty($_POST['email']) ? $_POST['email'] : '');?>"/>
+		   <br>
+		  <label for="inputPassword" class="sr-only">Parola</label>
+		  <input type="password" name="parola" id="inputPassword" 
+		  class="form-control" placeholder="Parola" required>
+
+		  <label for="confirmPassword" class="sr-only">Parola</label>
+		  <input type="password" name="confirmare_parola" id="confirmPassword" 
+		  class="form-control" placeholder="Confirmare parola" required>
+
+		  <br>
+		  <div style = "color:red;">
+		      <?php foreach ($errors as $error) :?>
+		        <p><?php echo $error;?></p>
+		      <?php endforeach; ?>
+		  </div>
+		  <button class="btn btn-lg btn-primary btn-block" type="submit" name="submit" >Inregistrare</button>
+
+		  <p class="mt-5 mb-3 text-muted">&copy; Catalin Binzari 2020</p>
 	</form>
-</div>
 </body>
 </html>
