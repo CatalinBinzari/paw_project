@@ -93,3 +93,32 @@ CREATE TABLE logs(
 insert into burse(tip_bursa,valoare_bursa) values ('sociala','300');
 insert into burse(tip_bursa,valoare_bursa) values ('performanta','1000');
 insert into burse(tip_bursa,valoare_bursa) values ('merit','600');
+
+CREATE TABLE statistica(
+	an INT(4),
+	burse_merit INT(4),
+	burse_sociale INT(4),
+	burse_performanta INT(4)
+);
+insert into statistica(an,burse_merit,burse_sociale,burse_performanta) values ('1999','967','1967','67');
+insert into statistica(an,burse_merit,burse_sociale,burse_performanta) values ('2000','667','2967','167');
+insert into statistica(an,burse_merit,burse_sociale,burse_performanta) values ('2001','367','3967','267');
+insert into statistica(an,burse_merit,burse_sociale,burse_performanta) values ('2002','1267','2967','167');
+insert into statistica(an,burse_merit,burse_sociale,burse_performanta) values ('2003','867','4967','67');
+insert into statistica(an,burse_merit,burse_sociale,burse_performanta) values ('2004','347','1967','367');
+insert into statistica(an,burse_merit,burse_sociale,burse_performanta) values ('2005','667','3967','267');
+insert into statistica(an,burse_merit,burse_sociale,burse_performanta) values ('2006','367','1967','167');
+insert into statistica(an,burse_merit,burse_sociale,burse_performanta) values ('2007','1267','967','467');
+insert into statistica(an,burse_merit,burse_sociale,burse_performanta) values ('2008','967','1967','167');
+insert into statistica(an,burse_merit,burse_sociale,burse_performanta) values ('2009','967','3967','367');
+insert into statistica(an,burse_merit,burse_sociale,burse_performanta) values ('2010','967','1967','67');
+insert into statistica(an,burse_merit,burse_sociale,burse_performanta) values ('2011','367','2967','467');
+insert into statistica(an,burse_merit,burse_sociale,burse_performanta) values ('2012','667','1967','167');
+insert into statistica(an,burse_merit,burse_sociale,burse_performanta) values ('2013','967','4967','367');
+insert into statistica(an,burse_merit,burse_sociale,burse_performanta) values ('2014','887','1967','467');
+insert into statistica(an,burse_merit,burse_sociale,burse_performanta) values ('2015','967','1967','667');
+insert into statistica(an,burse_merit,burse_sociale,burse_performanta) values ('2016','1267','1967','867');
+insert into statistica(an,burse_merit,burse_sociale,burse_performanta) values ('2017','967','967','867');
+insert into statistica(an,burse_merit,burse_sociale,burse_performanta) values ('2018','467','1967','167');
+insert into statistica(an,burse_merit,burse_sociale,burse_performanta) values ('2019','967','2967','367');
+insert into statistica(an,burse_merit,burse_sociale,burse_performanta) values ('2020','1267','3967','367');

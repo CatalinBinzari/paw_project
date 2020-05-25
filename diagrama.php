@@ -1,181 +1,145 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    
-    <title>Dashboard Template · Bootstrap</title>
+<?php
+require_once("config.php");
 
-    <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/dashboard/">
+$stmt = $dbConn->prepare("SELECT an as label, burse_merit as y from statistica ");
+$stmt->execute();
+$burse_merit = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+//print_r($burse_merit);
 
-    <!-- Bootstrap core CSS -->
+$stmt = $dbConn->prepare("SELECT an as label, burse_sociale as y from statistica ");
+$stmt->execute();
+$burse_sociale = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+//print_r($burse_sociale);
+
+$stmt = $dbConn->prepare("SELECT an as label, burse_performanta as y from statistica ");
+$stmt->execute();
+$burse_performanta = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+//print_r($burse_performanta);
+
+
+$ani = array_column($burse_sociale, 'label');
+
+if($_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST['afisare']))
+    {
+        afisare( $_POST['an_inceput'], $_POST['an_sfarsit'], $burse_merit, $burse_sociale, $burse_performanta);
+    }
+
+function afisare( $inceput, $sfarsit, &$burse_merit , &$burse_sociale, &$burse_performanta )
+    {	
+    	$inceput=$inceput-1999;
+    	$sfarsit=$sfarsit-$inceput-1998;
+    	$burse_merit = array_slice($burse_merit, $inceput, $sfarsit);
+    	$burse_sociale = array_slice($burse_sociale, $inceput, $sfarsit);
+    	$burse_performanta = array_slice($burse_performanta, $inceput, $sfarsit);
+    	//print_r($burse_sociale);
+    }
+?>
+<!DOCTYPE HTML>
+<html>
+<head> 
+
+<script>
+window.onload = function () {
+ 
+var chart = new CanvasJS.Chart("chartContainer", {
+	animationEnabled: true,
+	theme: "light2",
+	title:{
+		text: "Numarul de burse oferite de-a lungul anilor"
+	},
+	axisY:{
+		title: "Numarul de burse",
+		logarithmic: true,
+		titleFontColor: "#6D78AD",
+		gridColor: "#6D78AD",
+		labelFormatter: addSymbols
+	},
+	
+	legend: {
+		cursor: "pointer",
+		verticalAlign: "top",
+		fontSize: 16,
+		itemclick: toggleDataSeries
+	},
+	data: [{
+		type: "line",
+		markerSize: 0,
+		showInLegend: true,
+		name: "Burse de merit",
+		yValueFormatString: "#,##0 burse",
+		dataPoints: <?php echo json_encode($burse_merit, JSON_NUMERIC_CHECK); ?>
+	},
+	{
+		type: "line",
+		markerSize: 0,
+		showInLegend: true,
+		name: "Burse sociale",
+		yValueFormatString: "#,##0 burse",
+		dataPoints: <?php echo json_encode($burse_sociale, JSON_NUMERIC_CHECK); ?>
+	},
+	{
+		type: "line",
+		markerSize: 0,
+		showInLegend: true,
+		name: "Burse de performanta",
+		yValueFormatString: "#,##0 burse",
+		dataPoints: <?php echo json_encode($burse_performanta, JSON_NUMERIC_CHECK); ?>
+	}
+	]
+});
+chart.render();
+ 
+function addSymbols(e){
+	var suffixes = ["", "K", "M", "B"];
+ 
+	var order = Math.max(Math.floor(Math.log(e.value) / Math.log(1000)), 0);
+	if(order > suffixes.length - 1)
+		order = suffixes.length - 1;
+ 
+	var suffix = suffixes[order];
+	return CanvasJS.formatNumber(e.value / Math.pow(1000, order)) + suffix;
+}
+ 
+function toggleDataSeries(e){
+	if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+		e.dataSeries.visible = false;
+	}
+	else{
+		e.dataSeries.visible = true;
+	}
+	chart.render();
+}
+ 
+}
+</script>
+
+</head>
 <link href="assets/dist/css/bootstrap.css" rel="stylesheet">
+<body>
+<div id="chartContainer" style="height: 370px; width: 100%;"></div>
 
-    <style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-      }
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<div>
+        <br/>
+        <form action="diagrama.php" method="POST">
+            <div class="d-flex justify-content-start form-group mx-sm-3 mb-2">
+            <input class="btn btn-outline-primary" type="submit" name="afisare" value="Afisare pentru perioada de timp selectata" />
+            
+            <select name="an_inceput" class=" btn-secondary btn-sm dropdown-toggle mx-sm-3"  size="1">
+            <?php foreach($ani as $an): ?>
+    		<option value="<?php echo $an; ?>"><?php echo $an; ?> </option>
+    		<?php endforeach; ?>
+            </select>
 
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
-        }
-      }
-    </style>
-    <!-- Custom styles for this template -->
-    <link href="dashboard.css" rel="stylesheet">
-  </head>
-  <body>
-    
-
-<div >
-  <div >
-    
-
-    <main role="main" class=" sm-auto  px-md-4">
-      <div >
-        <h1 class="h2">Numarul de burse din anii precedenti</h1>
+            <select name="an_sfarsit" class=" btn-secondary btn-sm dropdown-toggle"  size="1">
+            <?php foreach($ani as $an): ?>
+    		<option value="<?php echo $an; ?>"><?php echo $an; ?> </option>
+    		<?php endforeach; ?>
+            </select>
+            </div>
+        </form>
         
-      </div>
+    </div>
+</body>
 
-      <canvas  id="myChart" width="900" height="380"></canvas>
-
-      <h2>Section title</h2>
-      <div class="table-responsive">
-        <table class="table table-striped table-sm">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Header</th>
-              <th>Header</th>
-              <th>Header</th>
-              <th>Header</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1,001</td>
-              <td>Lorem</td>
-              <td>ipsum</td>
-              <td>dolor</td>
-              <td>sit</td>
-            </tr>
-            <tr>
-              <td>1,002</td>
-              <td>amet</td>
-              <td>consectetur</td>
-              <td>adipiscing</td>
-              <td>elit</td>
-            </tr>
-            <tr>
-              <td>1,003</td>
-              <td>Integer</td>
-              <td>nec</td>
-              <td>odio</td>
-              <td>Praesent</td>
-            </tr>
-            <tr>
-              <td>1,003</td>
-              <td>libero</td>
-              <td>Sed</td>
-              <td>cursus</td>
-              <td>ante</td>
-            </tr>
-            <tr>
-              <td>1,004</td>
-              <td>dapibus</td>
-              <td>diam</td>
-              <td>Sed</td>
-              <td>nisi</td>
-            </tr>
-            <tr>
-              <td>1,005</td>
-              <td>Nulla</td>
-              <td>quis</td>
-              <td>sem</td>
-              <td>at</td>
-            </tr>
-            <tr>
-              <td>1,006</td>
-              <td>nibh</td>
-              <td>elementum</td>
-              <td>imperdiet</td>
-              <td>Duis</td>
-            </tr>
-            <tr>
-              <td>1,007</td>
-              <td>sagittis</td>
-              <td>ipsum</td>
-              <td>Praesent</td>
-              <td>mauris</td>
-            </tr>
-            <tr>
-              <td>1,008</td>
-              <td>Fusce</td>
-              <td>nec</td>
-              <td>tellus</td>
-              <td>sed</td>
-            </tr>
-            <tr>
-              <td>1,009</td>
-              <td>augue</td>
-              <td>semper</td>
-              <td>porta</td>
-              <td>Mauris</td>
-            </tr>
-            <tr>
-              <td>1,010</td>
-              <td>massa</td>
-              <td>Vestibulum</td>
-              <td>lacinia</td>
-              <td>arcu</td>
-            </tr>
-            <tr>
-              <td>1,011</td>
-              <td>eget</td>
-              <td>nulla</td>
-              <td>Class</td>
-              <td>aptent</td>
-            </tr>
-            <tr>
-              <td>1,012</td>
-              <td>taciti</td>
-              <td>sociosqu</td>
-              <td>ad</td>
-              <td>litora</td>
-            </tr>
-            <tr>
-              <td>1,013</td>
-              <td>torquent</td>
-              <td>per</td>
-              <td>conubia</td>
-              <td>nostra</td>
-            </tr>
-            <tr>
-              <td>1,014</td>
-              <td>per</td>
-              <td>inceptos</td>
-              <td>himenaeos</td>
-              <td>Curabitur</td>
-            </tr>
-            <tr>
-              <td>1,015</td>
-              <td>sodales</td>
-              <td>ligula</td>
-              <td>in</td>
-              <td>libero</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </main>
-  </div>
-</div>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
-        <script src="dashboard.js"></script></body>
 </html>
