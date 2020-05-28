@@ -200,6 +200,21 @@ table#t01 th {
                     <?php endforeach; ?>
   </div>
 </table>
+
+<!-- Web Widget -->
+<div id="pb-widget"></div>
+<script>
+  var bot_config = {
+    PB_HOST: "home",
+    PB_BOTKEY: "yIjx1p9cee0XMQgf3phR1XK1EXQIpuWq553kvbNPOWgg3Ab9DjazQKZa9xJhw0sRqYqgO8b8fE1FJ4zeixXoDA~~",
+    colors: { theme: "#4da3ff", text: "#FFFFFF" },
+    conversationOpener: "Buna, cu ce te pot ajuta?",
+    descriptionTitle: "Ajutor",
+    placeholderText: "Scrie un mesaj...",
+    botAvatar: "https://cdn3.iconfinder.com/data/icons/chat-bot-emoji-blue-filled-color/300/14134081Untitled-3-512.png",
+  }
+</script>
+<script src="https://widget.pandorabots.com/prod/pb-widget.js" type="text/javascript"></script>
 </body>
 </html>
 
