@@ -57,6 +57,10 @@ $stmt->execute();
     {
         migrare($dbConn,  $_POST['cnp_cont']);
     }
+    else if($_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST['declin']))
+    {
+        declin($dbConn,  $_POST['cnp_cont']);
+    }
     else if($_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST['actiune_bursa']))
     {
         //echo "actiune,bursa";
@@ -65,8 +69,17 @@ $stmt->execute();
     }
     else if($_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST['migrare_acceptati']))
     {
-        echo "acceptati,bursa";
+        //echo "acceptati,bursa";
         migrare_acceptati($dbConn,  $_POST['id_acceptat'], $_POST['tip_bursa_acceptat']);
+    }
+    if($_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST['migrare_toti']))
+    {
+        //migrare_toti($dbConn);
+    }
+    else if($_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST['anulare_acceptati']))
+    {
+        ///echo "anulare,bursa";
+        anulare_acceptati($dbConn,  $_POST['id_acceptat'], $_POST['tip_bursa_acceptat']);
     }
     else if($_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST['filtrare']))
     {
@@ -117,6 +130,24 @@ $stmt->execute();
         header("Refresh:0");
         echo "migrare reusita"; 
     }
+    function declin($dbConn,  $cnp)
+    { 
+      $dbConn->beginTransaction();
+      $dbConn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      
+        $sql = "insert into logs
+                   (utilizator_id, functie, actiune_logica) 
+                values ('".$_SESSION['admin_id']."','admin','declin utilizator cu CNP $cnp') ";
+        $dbConn->exec($sql);
+    $sql = "delete from 
+            lista_de_asteptare
+           where 
+            cnp = $cnp;";
+      $dbConn->exec($sql);
+      $dbConn->commit();
+        header("Refresh:0");
+        echo "declin reusit"; 
+    }
     function actiune_pe_bursa($dbConn,  $id_elev, $tip_actiune_bursa, $tip_bursa)
     {   
         $dbConn->beginTransaction();
@@ -138,6 +169,7 @@ $stmt->execute();
         header("Refresh:0");
         echo "migrare reusita"; 
     }
+
     function migrare_acceptati($dbConn,  $id, $tip_bursa_acceptat)
     {   
         $dbConn->beginTransaction();
@@ -164,6 +196,28 @@ $stmt->execute();
         header("Refresh:0");
         echo "migrare reusita"; 
     }
+    function anulare_acceptati($dbConn,  $id, $tip_bursa_acceptat)
+    {   
+        $dbConn->beginTransaction();
+        $dbConn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $sql = "UPDATE 
+                    cereri_bursa
+                SET aprobare = 'In asteptare',vazut_de_admin = '0'
+
+                 WHERE 
+                    id_elev = $id AND
+                    tip_bursa = '$tip_bursa_acceptat'
+                    ";
+        $dbConn->exec($sql);
+         $sql = "insert into logs
+                   (utilizator_id, functie, actiune_logica) 
+                values ('".$_SESSION['admin_id']."','admin',
+                'anulare bursa bursieri utlizator cu id: $id si tip bursa: bursa $tip_bursa_acceptat') ";
+        $dbConn->exec($sql);
+        $dbConn->commit();
+        header("Refresh:0");
+        echo "migrare reusita"; 
+    }
     function filtrare($cnp, $nume, $prenume, $scoala, &$filter)
     {   
         //echo $cnp . "," . $nume . "," .$prenume . "," .$scoala . ",";
@@ -178,7 +232,7 @@ $stmt->execute();
              $conditions[] = "prenume='$prenume'";
         }
         if(! empty($scoala)) {
-             $conditions[] = "scoala='$scoala'";
+             $conditions[] = "id_scoala='$scoala'";
         }
         if (count($conditions) > 0) {
              $filter .= " WHERE " . implode(' AND ', $conditions);
@@ -247,6 +301,7 @@ $stmt->execute();
   <body>
     <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
   <h5 class="my-0 mr-md-auto font-weight-normal"><a href="administrare.php">Home</h5>
+  <a class="btn btn-outline-primary mx-sm-3 " href="diagrama.php">Statistica</a>
 
   <a class="btn btn-outline-primary" href="burse.php">Mergi la burse</a>
 
@@ -315,9 +370,10 @@ table#t01 th {
 	<div>
 		<br/>
 		<form action="administrare.php" method="POST">
-            <div class="d-flex justify-content-start form-group mx-sm-3 mb-2">
-    		  <input type="submit" name="migrare" class="btn btn-outline-primary" value="Mirgrare utilizator cu cnp: " />
+      <div class="d-flex justify-content-start form-group mx-sm-3 mb-2">
+    		<input type="submit" name="migrare" class="btn btn-outline-primary" value="Mirgrare utilizator cu cnp: " />
 			  <input class="mx-sm-3"type="text" name="cnp_cont" required="" placeholder="CNP" value=""/>
+        <input type="submit" name="declin" class="btn btn-outline-danger" value="Declin " />
 			</div>
 		</form>
 	</div>
@@ -418,7 +474,12 @@ table#t01 th {
             <option value="performanta">Bursa de performanta</option>
             <option value="merit">Bursa de merit</option>
             </select>
+            <input type="submit" name="anulare_acceptati" class="btn btn-outline-danger mx-sm-3" value="Anulare" />
             </div>
+            
+        </form>
+        <form action="administrare.php" method="POST">
+          <input type="submit" name="migrare_toti" class="btn btn-outline-warning form-group mx-sm-3 mb-2" value="Migreaza toti utilizatorii" />
         </form>
     </div>
 </div>

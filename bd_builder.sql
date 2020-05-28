@@ -122,3 +122,16 @@ insert into statistica(an,burse_merit,burse_sociale,burse_performanta) values ('
 insert into statistica(an,burse_merit,burse_sociale,burse_performanta) values ('2018','467','1967','167');
 insert into statistica(an,burse_merit,burse_sociale,burse_performanta) values ('2019','967','2967','367');
 insert into statistica(an,burse_merit,burse_sociale,burse_performanta) values ('2020','1267','3967','367');
+
+
+insert into scoli (denumirea_institutiei,  oras, adresa,  telefon,  email) 
+	values ('SCOALA GIMNAZIALA NR.2 GALATI', 'Galati', 'Tiglina 1, Str.Regiment 11 Siret nr.2','312544','scoala2_gl_ro@yahoo.com');
+
+insert into scoli (denumirea_institutiei,  oras, adresa,  telefon,  email) 
+	values ('SCOALA GIMNAZIALA NR.3 "I.L.CARAGIALE" GALATI ', 'Galati', 'B-dul Dunarea nr.60','472422','scoala_il_caragiale@yahoo.com');
+
+insert into scoli (denumirea_institutiei,  oras, adresa,  telefon,  email) 
+	values ('SCOALA GIMNAZIALA NR.5  "CUZA VODA"  GALATI ', 'Galati', 'Str.Gorunului nr.6','468366','	scoala5cuzavoda@yahoo.fr');
+
+insert into scoli (denumirea_institutiei,  oras, adresa,  telefon,  email) 
+	values ('SCOALA GIMNAZIALA NR.7  "CONSTANTIN BRANCOVEANU" GALATI', 'Galati', 'Str.Brailei nr.204','410236','N/S')

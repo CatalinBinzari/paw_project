@@ -33,10 +33,10 @@ if (!empty($_POST)){
 		$errors[] ='Parola nu coincide';
 	}
 	if(empty($errors)) {
-		$stmt = $dbConn->prepare('INSERT INTO lista_de_asteptare(`cnp`,`nume`,`prenume`,`data_nasterii`,`email`,`parola`)
-			 VALUES(:cnp, :nume, :prenume, :data_nasterii, :email, :parola)');
+		$stmt = $dbConn->prepare('INSERT INTO lista_de_asteptare(`cnp`,`nume`,`prenume`,`data_nasterii`,`id_scoala`,`email`,`parola`)
+			 VALUES(:cnp, :nume, :prenume, :data_nasterii, :id_scoala, :email, :parola)');
 		$stmt -> execute (array('cnp' => $_POST['cnp'], 'nume' => $_POST['user_name'], 'prenume' => $_POST['user_prename'],
-		                        'data_nasterii' => $_POST['data'], 'email' => $_POST['email'], 'parola' => sha1($_POST['parola'].SALT) ));
+		                        'data_nasterii' => $_POST['data'],'id_scoala' => $_POST['id_scoala'], 'email' => $_POST['email'], 'parola' => sha1($_POST['parola'].SALT) ));
 		header("location: login.php");
 	}
 }
@@ -47,10 +47,6 @@ if (!empty($_POST)){
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Jekyll v4.0.1">
     <title>Pagina administrare burse</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/sign-in/">
@@ -97,6 +93,14 @@ if (!empty($_POST)){
 		   <label for="data" class="sr-only">Data nastere (Ex. 1990-09-01)</label>
 		  <input type="text" name="data" id="data" class="form-control" placeholder="Data nastere (Ex. 1990-09-01)"
 		   required=required autofocus value="<?php echo (!empty($_POST['data']) ? $_POST['data'] : '');?>"/>
+
+		   <select name="id_scoala" class=" btn-sm dropdown-toggle" size="1">
+                <option value="1">SCOALA  NR.1 "NICOLAE MANTU"</option>
+                <option value="2">SCOALA  NR.2 </option>
+                <option value="3">SCOALA  NR.3 "I.L.CARAGIALE"</option>
+                <option value="4">SCOALA  NR.5  "CUZA VODA"  </option>
+                <option value="5">SCOALA  NR.7  "CONSTANTIN BRANCOVE"</option>
+           </select>
 
 		  <label for="inputEmail" class="sr-only">Adresa de email</label>
 		  <input type="email" name="email" id="inputEmail" class="form-control" placeholder="Adresa de email"

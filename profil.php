@@ -113,6 +113,7 @@ foreach(new TableRows(new RecursiveArrayIterator($stmt->fetchAll())) as $k=>$v) 
   <body>
     <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
   <h5 class="my-0 mr-md-auto font-weight-normal"><a href="profil.php">Home</h5>
+   <a class="btn btn-outline-primary mx-sm-3 " href="diagrama.php">Statistica</a>
 
   <a class="btn btn-outline-primary" href="burse.php">Mergi la burse</a>
 

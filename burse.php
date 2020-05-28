@@ -103,11 +103,24 @@ th {
 				color: rgba(255,255,255,0.4);
 			}
 </style>
+<link href="pricing.css" rel="stylesheet">
+<link href="assets/dist/css/bootstrap.css" rel="stylesheet">
 </head>
+
+
+
+
+
 <body>
+    
+</div>
 
-<h2>Tabel burse <button class="button button1"><a href="topdf.php">Descarca tabel burse</button></h2>
-
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+  <h1 class="display-4">Tabel burse</h1>
+  <button class="button button1"><a href="topdf.php">Descarca tabel burse</a></button>
+  <p class="lead">Anul de invatamant 2019-2020</p>
+</div>
+<body>
 		
 <table id="t01">
   <tr>
