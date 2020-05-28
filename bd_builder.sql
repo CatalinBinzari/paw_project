@@ -134,4 +134,4 @@ insert into scoli (denumirea_institutiei,  oras, adresa,  telefon,  email)
 	values ('SCOALA GIMNAZIALA NR.5  "CUZA VODA"  GALATI ', 'Galati', 'Str.Gorunului nr.6','468366','	scoala5cuzavoda@yahoo.fr');
 
 insert into scoli (denumirea_institutiei,  oras, adresa,  telefon,  email) 
-	values ('SCOALA GIMNAZIALA NR.7  "CONSTANTIN BRANCOVEANU" GALATI', 'Galati', 'Str.Brailei nr.204','410236','N/S')
+	values ('SCOALA GIMNAZIALA NR.7  "CONSTANTIN BRANCOVEANU" GALATI', 'Galati', 'Str.Brailei nr.204','410236','N/S');
